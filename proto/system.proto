@@ -1,0 +1,118 @@
+syntax = "proto3";
+package inventory;
+
+// 1. Client Functions
+service ClientService {
+    rpc login (LoginRequest) returns (LoginResponse);
+    rpc logout (TokenMessage) returns (StatusMessage);
+    rpc post (PostRequest) returns (StatusMessage);
+    rpc get (GetRequest) returns (GetResponse);
+}
+
+// 2. Application Server Functions (Inter-node communication for routing)
+service AppServerService {
+    rpc processBusinessRequest (BusinessRequest) returns (StatusMessage);
+}
+
+// 3. LLM Server Functions
+service LLMService {
+    rpc getLLMAnswer (LLMQuery) returns (LLMAnswerResponse);
+}
+
+// 4. Raft Consensus Functions (Milestone 2)
+service RaftService {
+    rpc requestVote (VoteRequest) returns (VoteReply);
+    rpc appendEntries (AppendEntriesRequest) returns (AppendEntriesReply);
+}
+
+// --- Message Definitions ---
+
+message LoginRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LoginResponse {
+    string status = 1;
+    string token = 2;
+}
+
+message TokenMessage {
+    string token = 1;
+}
+
+message StatusMessage {
+    string status = 1;
+}
+
+message PostRequest {
+    string token = 1;
+    string type = 2; // e.g., "order"
+    string data = 3; // JSON string with order details
+}
+
+message GetRequest {
+    string token = 1;
+    string type = 2; // e.g., "inventory_levels", "analytics"
+    string params = 3;
+}
+
+message GetResponse {
+    string status = 1;
+    message Item {
+        string id = 1;
+        string data = 2;
+    }
+    repeated Item items = 2;
+}
+
+message BusinessRequest {
+    string request_id = 1;
+    string payload = 2;
+    string context = 3;
+}
+
+message LLMQuery {
+    string request_id = 1;
+    string query = 2;
+    string context = 3; // e.g., "demand_prediction", "summarize_analytics"
+}
+
+message LLMAnswerResponse {
+    string request_id = 1;
+    string answer = 2;
+}
+
+// Raft Messages
+message VoteRequest {
+    string from_node = 1;
+    string to_node = 2;
+    int32 term = 3;
+    int32 last_log_index = 4;
+    int32 last_log_term = 5;
+}
+
+message VoteReply {
+    string from_node = 1;
+    string to_node = 2;
+    int32 term = 3;
+    bool vote_granted = 4;
+}
+
+message AppendEntriesRequest {
+    string from_node = 1;
+    string to_node = 2;
+    int32 term = 3;
+    int32 prev_index = 4;
+    int32 prev_term = 5;
+    int32 commit_index = 6;
+    repeated string entries = 7;
+}
+
+message AppendEntriesReply {
+    string from_node = 1;
+    string to_node = 2;
+    int32 term = 3;
+    bool entry_appended = 4;
+    int32 match_index = 5;
+}

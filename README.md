@@ -1,17 +1,32 @@
 # Distributed Inventory Management System
-Advanced Operating Systems project under Dr. Asish Bera presented by:
+Advanced Operating Systems project under Dr. Asish Bera, Birla Institute of Technology & Science, Pilani-Pilani Campus, presented by:
 |Name|BITS ID|BITS email|
 |-|-|-|
-|Mitul Vashista|2026H1020071|H20260071@pilani.bits-pilani.ac.in|
-|Ruchir Kumar|2026H|H2026@pilani.bits-pilani.ac.in|
+|Mitul Vashista|2026H1030071|H20260071@pilani.bits-pilani.ac.in|
+|Ruchir Kumar|2026H1030083|H2026083@pilani.bits-pilani.ac.in|
 |Parth|2026H1120137P|H20260137@pilani.bits-pilani.ac.in|
 
-# Usage
-Install required python dependencies:
+# Requirements
+- Python 3.8+ (or language of choice based on implementation)
+- gRPC and Protocol Buffers
+- Python dependencies (see requirements.txt)
+
+# Build Instructions
+1. Clone Repository:
+```shell
+git clone https://github.com/Ruchir0403/distributed_inventory.git
+cd distributed_inventory
+```
+2. Install required python dependencies:
 ```shell
 pip install -r requirements.txt
 ```
-## Steps
+3. Install grpcio-tools:
+```shell
+python-grpc-tools-protoc --python_out=./proto --grpc_python_out=./proto -I./proto proto/system.proto              
+```
+
+# Usage
 1. Run LLM server:
 ```shell
 cd llm_server

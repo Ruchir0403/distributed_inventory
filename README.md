@@ -6,12 +6,15 @@ Advanced Operating Systems project under Dr. Asish Bera, Birla Institute of Tech
 |Ruchir Kumar|2026H1030083|H2026083@pilani.bits-pilani.ac.in|
 |Parth|2026H1120137P|H20260137@pilani.bits-pilani.ac.in|
 
-# Requirements
+## Overview
+This project implements a scalable, distributed inventory management solution using modern microservices architecture. It combines traditional inventory operations with AI/LLM capabilities to provide intelligent inventory analytics and natural language query support.
+
+## Requirements
 - Python 3.8+ (or language of choice based on implementation)
 - gRPC and Protocol Buffers
 - Python dependencies (see requirements.txt)
 
-# Build Instructions
+## Build Instructions
 1. Clone Repository:
 ```shell
 git clone https://github.com/Ruchir0403/distributed_inventory.git
@@ -26,7 +29,7 @@ pip install -r requirements.txt
 python-grpc-tools-protoc --python_out=./proto --grpc_python_out=./proto -I./proto proto/system.proto              
 ```
 
-# Usage
+## Usage
 1. Run LLM server:
 ```shell
 cd llm_server
@@ -43,10 +46,10 @@ cd client
 python client.py
 ```
 
-# Explaination of each component
-## LLM Server
+## Explaination of each component
+### LLM Server
 Serves a local TinyLlama LLM chatbot. It is exposed to the system using gRPC hooks. It is used to provide LLM-powered insights on current inventory & inventory acquisition.
-## RPC Server
+### RPC Server
 The main application/inventory server that handles core business logic for inventory management. Handles integration with other services through gRPC.
-## Client
+### Client
 A reference client implementation showing how to consume the app_server's gRPC services.

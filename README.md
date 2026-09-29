@@ -13,26 +13,25 @@ pip install -r requirements.txt
 ```
 ## Steps
 1. Run LLM server:
-```sh
+```shell
 cd llm_server
 python llm_service.py
 ```
 2. Run RPC server:
-```sh
+```shell
 cd app_server
 python server.py
 ```
-1. Run client:
-```sh
+3. Run client:
+```shell
 cd client
 python client.py
 ```
 
 # Explaination of each component
 ## LLM Server
-The LLM Server serves a local TinyLlama LLM chatbot. It is exposed to the system using gRPC hooks. It is used to provide LLM-powered insights on current inventory & inventory acquisition.
+Serves a local TinyLlama LLM chatbot. It is exposed to the system using gRPC hooks. It is used to provide LLM-powered insights on current inventory & inventory acquisition.
 ## RPC Server
 The main application/inventory server that handles core business logic for inventory management. Handles integration with other services through gRPC.
 ## Client
 A reference client implementation showing how to consume the app_server's gRPC services.
-

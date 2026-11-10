@@ -1,5 +1,14 @@
 # Distributed Inventory
 
+Advanced Operating Systems project under Dr. Asish Bera, Birla Institute of
+Technology & Science, Pilani-Pilani Campus.
+
+| Name | BITS ID | BITS email |
+|---|---|---|
+| Mitul Vashista | 2026H1030071 | H20260071@pilani.bits-pilani.ac.in |
+| Ruchir Kumar | 2026H1030083 | H2026083@pilani.bits-pilani.ac.in |
+| Parth | 2026H1120137P | H20260137@pilani.bits-pilani.ac.in |
+
 A Python/gRPC prototype for a distributed inventory service. It combines a
 three-node Raft-style cluster for replicating inventory orders with a separate
 LLM service that produces inventory-related text insights.

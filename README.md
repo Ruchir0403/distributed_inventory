@@ -134,30 +134,44 @@ python -m pip install "grpcio>=1.84.0" "protobuf>=7.35.1"
 python -m pip install transformers torch
 ```
 
+```sh
+python -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install --upgrade pip
+python -m pip install "grpcio>=1.84.0" "protobuf>=7.35.1"
+python -m pip install transformers torch
+```
+
 The LLM package install may be large. `grpcio-tools` is only needed if you
 change the protobuf definition and want to regenerate the checked-in bindings.
 
-## Run locally (Windows / PowerShell)
-
+## Run locally
 Start each process in a separate terminal opened at the repository root. The
 scripts append `../proto` to Python's import path relative to the **current
 working directory**, so change to each script's directory before running it.
 
 ### 1. Start the LLM service
-
+#### Windows / PowerShell
 ```powershell
 Set-Location .\llm_server
 ..\.venv\Scripts\python.exe .\llm_service.py
 ```
+
+#### Linux / MacOS / bash
+```sh
+cd .\llm_server
+..\.venv\bin\python .\llm_service.py
+```
+---
 
 It listens on `localhost:50051` and loads
 `TinyLlama/TinyLlama-1.1B-Chat-v1.0` at startup. The first launch may take time
 to download and initialize the model.
 
 ### 2. Start the three application/Raft nodes
-
 Run each command in its own terminal:
 
+#### Windows / PowerShell
 ```powershell
 Set-Location .\app_server
 ..\.venv\Scripts\python.exe .\server.py 50052
@@ -173,6 +187,23 @@ Set-Location .\app_server
 ..\.venv\Scripts\python.exe .\server.py 50054
 ```
 
+#### Linux / MacOS / bash
+```sh
+cd ./app_server
+../.venv/bin/python ./server.py 50052
+```
+
+```sh
+cd ./app_server
+../.venv/bin/python ./server.py 50053
+```
+
+```sh
+cd ./app_server
+../.venv/bin/python ./server.py 50054
+```
+---
+
 The nodes use randomized election timeouts, so allow a few seconds for the
 cluster to elect a leader before sending orders. The state files, if created,
 are written to the current directory as `raft_state_localhost_50052.json` and
@@ -180,10 +211,18 @@ corresponding files for the other ports.
 
 ### 3. Run the client walkthrough
 
+#### Windows / Powershell
 ```powershell
 Set-Location .\client
 ..\.venv\Scripts\python.exe .\client.py
 ```
+
+#### Linux / MacOS / bash
+```sh
+cd ./client
+../.venv/bin/python ./client.py
+```
+---
 
 The client tries the configured nodes for an order until one does not respond
 with `REDIRECT_TO_LEADER`. It then reads inventory, asks for all three AI
@@ -191,10 +230,18 @@ insights, and logs out.
 
 ### 4. Run the stress script (optional)
 
+#### Windows / Powershell
 ```powershell
 Set-Location .\client
 ..\.venv\Scripts\python.exe .\stress_test.py
 ```
+
+#### Linux / MacOS / bash
+```sh
+cd ./client
+../.venv/bin/python ./stress_test.py
+```
+---
 
 This script sends 15 concurrent `ItemA` orders of 10 units each directly to
 `localhost:50052`. It assumes that port is currently the leader; unlike the
@@ -252,7 +299,13 @@ The generated files are checked in, so regeneration is not needed to run the
 project. If you edit `system.proto`, install `grpcio-tools` in the active
 environment, then run this from the `proto` directory:
 
+#### Windows / Powershell
 ```powershell
+python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. .\system.proto
+```
+
+#### Linux / MacOS / bash
+```sh
 python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. .\system.proto
 ```
 
